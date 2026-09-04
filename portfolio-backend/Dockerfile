@@ -19,4 +19,8 @@ EXPOSE 8000
 # de fora da imagem via .dockerignore, de propósito). Rodar aqui também evita
 # expor segredos como ARG/ENV nas camadas da imagem. Ambos são idempotentes,
 # então uma migration ou um static novo já entram em vigor sem passo manual.
-CMD python manage.py collectstatic --noinput && python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000
+# ensure_superuser (leads/management/commands) roda depois do migrate e é
+# idempotente: cria o superuser na primeira vez, e nas próximas apenas
+# atualiza a senha a partir de DJANGO_SUPERUSER_PASSWORD. É como "resetar"
+# a senha em produção sem shell: muda a env var no Render e reimplanta.
+CMD python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py ensure_superuser && gunicorn config.wsgi:application --bind 0.0.0.0:8000
