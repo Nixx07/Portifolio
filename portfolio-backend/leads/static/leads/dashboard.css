@@ -1,0 +1,321 @@
+/* ==========================================================================
+   NIXX — Dashboard de Solicitações (leads)
+   Mesmo vocabulário visual do portfólio público (folha de especificações
+   de engenharia: cantos de registro, réguas pontilhadas, rótulos mono),
+   reimplementado aqui de forma autônoma — este arquivo é servido pelo
+   Django (staticfiles), não pelo mesmo host do front-end público.
+   ========================================================================== */
+
+:root {
+    --bg: #0a0a0c;
+    --bg-panel: #101013;
+    --bg-panel-alt: #0d0d10;
+    --bg-inset: #08090b;
+
+    --ink: #e8e8ea;
+    --ink-dim: #8b8d94;
+    --ink-faint: #4c4e56;
+
+    --line: #212227;
+    --line-strong: #303239;
+
+    --accent: #c8102e;
+    --accent-bright: #ff3b52;
+    --accent-soft: rgba(200, 16, 46, 0.13);
+
+    --ok: #16a34a;
+    --warn: #d97706;
+
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --r-s: 3px;
+    --r-m: 5px;
+    --ease: cubic-bezier(.19, 1, .22, 1);
+}
+
+* { margin: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+.dot { color: var(--accent); }
+
+/* Cantos de registro reutilizados em painéis e cards ------------------- */
+.plate { position: relative; }
+
+.plate::before,
+.plate::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+.plate::before { top: -1px; left: -1px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+.plate::after { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+
+/* Botões ----------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: var(--r-s);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease, background-color .2s ease;
+    white-space: nowrap;
+}
+
+.btn::before { content: "["; color: var(--ink-faint); transition: color .2s ease; }
+.btn::after { content: "]"; color: var(--ink-faint); transition: color .2s ease; }
+.btn:hover { border-color: var(--accent); color: var(--accent-bright); }
+.btn:hover::before, .btn:hover::after { color: var(--accent); }
+.btn-primary { color: var(--accent-bright); }
+.btn-primary:hover { background-color: var(--accent-soft); border-color: var(--accent); }
+
+/* ==========================================================================
+   Login
+   ========================================================================== */
+
+.login-shell {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.login-panel {
+    width: 100%;
+    max-width: 360px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 32px;
+}
+
+.login-panel__head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+}
+
+.login-panel__mark { font-family: var(--font-mono); font-size: 1.15rem; font-weight: 600; }
+.login-panel__sub { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ink-faint); }
+
+.login-alert {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-bright);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    padding: 10px 12px;
+    margin-bottom: 20px;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.field__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.field input {
+    height: 42px;
+    padding: 0 12px;
+    background: var(--bg-inset);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+}
+
+.field input:focus { outline: none; border-color: var(--accent); }
+
+.login-submit { width: 100%; margin-top: 8px; }
+
+/* ==========================================================================
+   Dashboard
+   ========================================================================== */
+
+.dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--line);
+}
+
+.dash-header__brand { display: flex; align-items: baseline; gap: 10px; }
+.dash-header__mark { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; }
+.dash-header__role { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+
+.dash-shell { max-width: 1160px; margin: 0 auto; padding: 32px; }
+
+/* Abas 100% CSS: cada radio controla a visibilidade do painel irmão
+   correspondente e o estado visual do label associado. */
+.tab-input { position: absolute; opacity: 0; pointer-events: none; }
+
+.tab-bar {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 4px;
+    margin-bottom: 24px;
+    width: fit-content;
+}
+
+.tab-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-dim);
+    border-radius: var(--r-s);
+    cursor: pointer;
+    transition: color .2s ease, background-color .2s ease;
+}
+
+.tab-label:hover { color: var(--ink); }
+
+.tab-count {
+    font-size: 0.68rem;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--bg-inset);
+    color: var(--ink-faint);
+}
+
+#tab-pendentes:checked ~ .tab-bar label[for="tab-pendentes"],
+#tab-resolvidos:checked ~ .tab-bar label[for="tab-resolvidos"] {
+    color: var(--accent-bright);
+    background: var(--accent-soft);
+}
+
+#tab-pendentes:checked ~ .tab-bar label[for="tab-pendentes"] .tab-count,
+#tab-resolvidos:checked ~ .tab-bar label[for="tab-resolvidos"] .tab-count {
+    background: var(--accent);
+    color: #fff;
+}
+
+.tab-panel { display: none; }
+#tab-pendentes:checked ~ #panel-pendentes { display: block; }
+#tab-resolvidos:checked ~ #panel-resolvidos { display: block; }
+
+.empty-state {
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 48px 0;
+    text-align: center;
+    border: 1px dashed var(--line-strong);
+}
+
+/* Cards de lead ----------------------------------------------------------- */
+.lead-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.lead-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 20px;
+}
+
+.lead-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+}
+
+.lead-card__name { font-size: 1rem; font-weight: 700; }
+
+.badge {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+}
+
+.badge--novo { color: var(--accent-bright); }
+.badge--em_contato { color: var(--warn); }
+.badge--convertido { color: var(--ok); }
+.badge--descartado { color: var(--ink-faint); }
+
+.specs-list { display: flex; flex-direction: column; gap: 10px; }
+.specs-row { display: flex; align-items: baseline; gap: 8px; font-size: 0.86rem; }
+
+.specs-row dt {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.specs-row .leader { flex: 1; border-bottom: 1px dotted var(--line-strong); margin-bottom: 4px; min-width: 8px; }
+.specs-row dd { flex-shrink: 0; max-width: 65%; text-align: right; color: var(--ink); }
+
+.lead-card__desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    padding-top: 4px;
+    border-top: 1px solid var(--line);
+}
+
+.lead-card__action { padding-top: 4px; }
+.lead-card__action .btn { width: 100%; }
+
+/* Responsivo --------------------------------------------------------------- */
+@media (max-width: 640px) {
+    .dash-header { padding: 16px 20px; }
+    .dash-shell { padding: 20px; }
+    .tab-bar { width: 100%; }
+    .tab-label { flex: 1; justify-content: center; }
+    .lead-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,33 @@
+{% extends "leads/_base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block body_class %}dashboard-login{% endblock %}
+
+{% block content %}
+<main class="login-shell">
+    <section class="login-panel plate">
+        <div class="login-panel__head">
+            <span class="login-panel__mark">nixx<span class="dot">_</span></span>
+            <span class="login-panel__sub">Painel de Solicitações</span>
+        </div>
+
+        {% if form.errors %}
+        <p class="login-alert">Usuário ou senha inválidos.</p>
+        {% endif %}
+
+        <form method="post" class="login-form" novalidate>
+            {% csrf_token %}
+            <label class="field">
+                <span class="field__label">Usuário</span>
+                <input type="text" name="username" autofocus required autocapitalize="none" autocomplete="username">
+            </label>
+            <label class="field">
+                <span class="field__label">Senha</span>
+                <input type="password" name="password" required autocomplete="current-password">
+            </label>
+            <input type="hidden" name="next" value="{{ next }}">
+            <button type="submit" class="btn btn-primary login-submit">Entrar</button>
+        </form>
+    </section>
+</main>
+{% endblock %}

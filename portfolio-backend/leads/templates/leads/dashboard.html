@@ -1,0 +1,57 @@
+{% extends "leads/_base.html" %}
+
+{% block title %}Solicitações{% endblock %}
+{% block body_class %}dashboard-home{% endblock %}
+
+{% block content %}
+<header class="dash-header">
+    <div class="dash-header__brand">
+        <span class="dash-header__mark">nixx<span class="dot">_</span></span>
+        <span class="dash-header__role">Painel de Solicitações</span>
+    </div>
+    <form method="post" action="{% url 'dashboard:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Sair</button>
+    </form>
+</header>
+
+<main class="dash-shell">
+    <div class="dash-tabs">
+        <input type="radio" name="dash-tab" id="tab-pendentes" class="tab-input" checked>
+        <input type="radio" name="dash-tab" id="tab-resolvidos" class="tab-input">
+
+        <div class="tab-bar plate">
+            <label for="tab-pendentes" class="tab-label">
+                Pendentes <span class="tab-count">{{ pendentes|length }}</span>
+            </label>
+            <label for="tab-resolvidos" class="tab-label">
+                Resolvidos <span class="tab-count">{{ resolvidos|length }}</span>
+            </label>
+        </div>
+
+        <section class="tab-panel" id="panel-pendentes">
+            {% if pendentes %}
+            <div class="lead-grid">
+                {% for lead in pendentes %}
+                {% include "leads/_lead_card.html" %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">Nenhuma solicitação pendente no momento.</p>
+            {% endif %}
+        </section>
+
+        <section class="tab-panel" id="panel-resolvidos">
+            {% if resolvidos %}
+            <div class="lead-grid">
+                {% for lead in resolvidos %}
+                {% include "leads/_lead_card.html" %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">Nenhuma solicitação resolvida ainda.</p>
+            {% endif %}
+        </section>
+    </div>
+</main>
+{% endblock %}

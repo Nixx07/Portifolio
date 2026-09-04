@@ -1,0 +1,80 @@
+/*
+  Este arquivo existe SÓ para o `npm run dev` local ter fundo escuro e as
+  mesmas variáveis do site de verdade — ele nunca é importado pelos
+  componentes nem entra no build de produção (vite.config.js não o inclui).
+
+  Em produção, o widget é montado dentro do próprio index.html do
+  portfólio, que já define estas mesmas variáveis em style/style.css.
+  Se qualquer uma delas mudar lá, replique aqui também para o preview
+  continuar fiel.
+*/
+:root {
+  --bg: #0a0a0c;
+  --bg-panel: #101013;
+  --bg-panel-alt: #0d0d10;
+  --bg-inset: #08090b;
+
+  --ink: #e8e8ea;
+  --ink-dim: #8b8d94;
+  --ink-faint: #4c4e56;
+
+  --line: #212227;
+  --line-strong: #303239;
+
+  --accent: #c8102e;
+  --accent-bright: #ff3b52;
+  --accent-soft: rgba(200, 16, 46, 0.13);
+
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --r-s: 3px;
+  --r-m: 5px;
+  --ease: cubic-bezier(.19, 1, .22, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Réplica mínima das classes utilitárias do site que os componentes
+   reaproveitam (.eyebrow, .plate, .btn, .btn-primary, .specs-row) — só o
+   suficiente para o preview local não ficar sem estilo nenhum. */
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+}
+
+.plate { position: relative; }
+.plate::before, .plate::after { content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none; }
+.plate::before { top: -1px; left: -1px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+.plate::after { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 44px; padding: 0 18px; border-radius: var(--r-s);
+  font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+  background: transparent; border: 1px solid var(--line-strong); color: var(--ink);
+  cursor: pointer; transition: border-color .2s ease, color .2s ease, background-color .2s ease;
+}
+.btn::before { content: "["; color: var(--ink-faint); }
+.btn::after { content: "]"; color: var(--ink-faint); }
+.btn:hover { border-color: var(--accent); color: var(--accent-bright); }
+.btn-primary { color: var(--accent-bright); }
+.btn-primary:hover { background-color: var(--accent-soft); border-color: var(--accent); }
+
+.specs-row { display: flex; align-items: baseline; gap: 10px; font-size: 0.92rem; }
+.specs-row dt { flex-shrink: 0; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+.specs-row .leader { flex: 1; border-bottom: 1px dotted var(--line-strong); margin-bottom: 4px; min-width: 12px; }
+.specs-row dd { flex-shrink: 0; max-width: 62%; text-align: right; font-weight: 500; color: var(--ink); margin: 0; }

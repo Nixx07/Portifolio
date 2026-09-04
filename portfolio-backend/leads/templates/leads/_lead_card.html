@@ -1,0 +1,47 @@
+{% comment %}
+Renderiza um lead como card. Recebe `lead` no contexto — usado tanto no
+grid de pendentes quanto no de resolvidos (leads/dashboard.html), então
+qualquer ajuste visual feito aqui vale para os dois grupos ao mesmo tempo.
+{% endcomment %}
+<article class="lead-card plate">
+    <div class="lead-card__top">
+        <h3 class="lead-card__name">{{ lead.nome }}</h3>
+        <span class="badge badge--{{ lead.status }}">{{ lead.get_status_display }}</span>
+    </div>
+
+    <div class="specs-list">
+        <div class="specs-row">
+            <dt>Contato</dt>
+            <span class="leader"></span>
+            <dd>{{ lead.get_metodo_contato_display }} · {{ lead.contato_principal }}</dd>
+        </div>
+        <div class="specs-row">
+            <dt>Projeto</dt>
+            <span class="leader"></span>
+            <dd>{{ lead.get_tipo_projeto_display }}</dd>
+        </div>
+        <div class="specs-row">
+            <dt>Orçamento</dt>
+            <span class="leader"></span>
+            <dd>{{ lead.get_orcamento_faixa_display|default:"Não informado" }}</dd>
+        </div>
+        <div class="specs-row">
+            <dt>Recebido</dt>
+            <span class="leader"></span>
+            <dd>{{ lead.criado_em|date:"d/m/Y H:i" }}</dd>
+        </div>
+    </div>
+
+    {% if lead.descricao %}
+    <p class="lead-card__desc">{{ lead.descricao|truncatewords:28 }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'dashboard:alternar-status' pk=lead.pk %}" class="lead-card__action">
+        {% csrf_token %}
+        {% if lead.esta_resolvido %}
+        <button type="submit" class="btn">Reabrir</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary">Marcar como resolvido</button>
+        {% endif %}
+    </form>
+</article>
